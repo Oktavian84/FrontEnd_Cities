@@ -1,26 +1,62 @@
 @import "bootstrap/scss/bootstrap";
 
+* {
+    box-sizing: border-box;
+    padding-top: 0.4em;
+}
+
 body {
     background-color: black;
 }
 
+h1 {
+    color: orange;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3em;
+    padding-left: 3em;
+    padding-right: 3em;
+}
+
 .allcitites {
-display: flex;
-gap: 100px;
-flex-wrap: wrap;
-justify-content: center;
-align-items: center;
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
 }
 
 .card1 {
     height: 800px;
-    width: 600px;
-    border: 2px solid white;
+    width: 550px;
+    padding: 2em;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .img {
     height: 80%;
     width: 80%;
-    object-fit:cover;
-    margin-left: 60px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.info-btn {
+    width: 6em;
+}
+
+.delete-btn {
+    width: 6em;
 }
