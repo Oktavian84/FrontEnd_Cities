@@ -1,0 +1,26 @@
+@import "bootstrap/scss/bootstrap";
+
+body {
+    background-color: black;
+}
+
+.allcitites {
+display: flex;
+gap: 100px;
+flex-wrap: wrap;
+justify-content: center;
+align-items: center;
+}
+
+.card1 {
+    height: 800px;
+    width: 600px;
+    border: 2px solid white;
+}
+
+.img {
+    height: 80%;
+    width: 80%;
+    object-fit:cover;
+    margin-left: 60px;
+}
