@@ -1,7 +1,12 @@
 
-export interface Apidata {
+export interface ApiData {
     status: string;
     data: City[];
+  }
+
+  export interface ApiDataCity {
+    status: string;
+    data: City;
   }
 
 export interface City {
