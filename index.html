@@ -8,16 +8,23 @@
   </head>
   <body>
     <header class="header">
-    <h1>Cities Database</h1>
-    <button type="button" class="btn btn-warning btn-lg">Create a new city</button>
+      <h1>Cities Database</h1>
+      <button class="btn btn-warning btn-lg createCity" id="createCity" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Create a new city</button>
     </header>
     <main>
+      <div id="error-container" class="container-fluid error-container"></div>
       <div id="allcitites" class="allcitites"></div>
       <div class="offcanvas offcanvas-start info" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions">
         <div class="offcanvas-header">
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body"></div>
+      </div>
+      <div class="offcanvas offcanvas-end create" data-bs-scroll="true" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body2"></div>
       </div>
     </main>
     
