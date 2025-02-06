@@ -1,12 +1,16 @@
 import "./style.scss";
-import { getCities, getCity, deleteCity } from "./api.ts"
+import { getCities, getCity, createCity, deleteCity } from "./api.ts"
 import { City } from "./types.ts"
 
 const allCities = document.querySelector ("#allcitites") as HTMLDivElement;
 const errormsg = document.querySelector("#error-container") as HTMLDivElement;
 const cityInfo = document.querySelector(".offcanvas-body") as HTMLDivElement;
-const createCity = document.querySelector("#createCity") as HTMLButtonElement;
-const createCityForm = document.querySelector(".offcanvas-body2") as HTMLDivElement;
+const inputCityName  = document.querySelector("#inputCityName") as HTMLInputElement;
+const inputCityLocation = document.querySelector("#inputCityLocation") as HTMLInputElement;
+const inputCityPopulation = document.querySelector("#inputCityPopulation") as HTMLInputElement;
+const inputCityDescription = document.querySelector("#inputCityDescription") as HTMLInputElement;
+const createCityElement = document.querySelector("#createCity") as HTMLButtonElement;
+// const createCityForm = document.querySelector(".offcanvas-body2") as HTMLDivElement;
 
 
 const renderCities = async () => {
@@ -45,53 +49,54 @@ const renderCities = async () => {
                 <p class="cityLocation text-center">Location: ${cities.city_location}</p>
                 <p class="cityPopulation text-center">Population: ${cities.city_population}</p>
                 <p class="cityDescription text-center">Description: ${cities.city_description}</p>
-                <button class="btn btn-danger btn-m mt-5" type="button">Update</button>
+                <button class="btn btn-danger btn-m update-btn mt-5" type="button">Update</button>
               </div>
             </div>`;
         });
       });
 
-      const deleteButtons = document.querySelectorAll(".delete-btn");
-      deleteButtons.forEach((button) => {
-        button.addEventListener("click", async (e) => {
-          const cityID = Number((e.target as HTMLButtonElement).getAttribute("data-id-delete"));
-          deleteCity(cityID);
-        })
-      })
+      
   } catch (error) {
-  errormsg.innerHTML = `<h2 class= "errorMsg">Something whent wrong when trying to get the cities data, ${error}</h2>`
+  errormsg.innerHTML = `<h2 class="errorMsg">Something whent wrong when trying to get the cities data, ${error}</h2>`
   };
 };
 
-createCity.addEventListener("click", () => {
-  createCityForm.innerHTML =`
-    <form id="createCityForm" class="formCreateCity">  
-      <div class="inputForm">
-        <label for="inputCityImgUrl" class="form-label">City Image URL</label>  
-        <input type="text" class="form-control" id="inputCityImgUrl" placeholder="City Image URL">
-      </div>
+createCityElement.addEventListener("click", () => {
 
-      <div class="inputForm">
-        <label for="inputCityName" class="form-label">City Name</label>
-        <input type="text" class="form-control" id="inputCityName" placeholder="City Name">
-    </div>
+  const formCreateCity = document.querySelector(".formCreateCity") as HTMLFormElement;
+  formCreateCity.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-      <div class="inputForm">
-        <label for="inputCityLocation" class="form-label">City Location</label>
-        <input type="text" class="form-control" id="inputCityLocation" placeholder="City Location">
-      </div>
-
-      <div class="inputForm">
-        <label for="inputCityPopulation" class="form-label">City Population</label>
-        <input type="text" class="form-control" id="inputCityPopulation" placeholder="City Population">
-      </div>
-
-      <div class="inputForm">
-        <label for="inputCityDescription" class="form-label">City Description</label>
-        <input type="textbox" class="form-control" id="inputCityDescription" placeholder="City Description">
-      </div>
-    </form>`;
+    const inputCityUrl = document.querySelector<HTMLInputElement>("#inputCityImgUrl")!.value;
+    console.log(inputCityUrl);
+    const newCity: City = {
+      img_url: inputCityUrl,
+      city_name: inputCityName.value.trim(),
+      city_location: inputCityLocation.value.trim(),
+      city_population: inputCityPopulation.value.trim() || null!,
+      city_description: inputCityDescription.value.trim() || null!,
+  };
+    console.log(inputCityUrl);
+  try {
+    await createCity(newCity);
+    renderCities();
+  } catch (error) {
+    console.error("Error creating city:", error);
+  }
+  })
 });
 
-renderCities();
 
+await renderCities();
+
+const deleteButtons = document.querySelectorAll(".delete-btn");
+deleteButtons.forEach((button) => {
+  button.addEventListener("click", async (e) => {
+    const cityID = Number((e.target as HTMLButtonElement).getAttribute("data-id-delete"));
+    console.log(cityID);
+    await deleteCity(cityID);
+    await renderCities();
+  })
+})
+
+await renderCities();

@@ -10,7 +10,7 @@ export interface ApiData {
   }
 
 export interface City {
-    id: number;
+    id?: number;
     img_url: string;
     city_name: string;
     city_location: string;
