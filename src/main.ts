@@ -10,7 +10,6 @@ const inputCityLocation = document.querySelector("#inputCityLocation") as HTMLIn
 const inputCityPopulation = document.querySelector("#inputCityPopulation") as HTMLInputElement;
 const inputCityDescription = document.querySelector("#inputCityDescription") as HTMLInputElement;
 const createCityElement = document.querySelector("#createCity") as HTMLButtonElement;
-// const createCityForm = document.querySelector(".offcanvas-body2") as HTMLDivElement;
 
 
 const renderCities = async () => {
@@ -33,29 +32,6 @@ const renderCities = async () => {
       })
       .join("");
 
-      const infoButtons = document.querySelectorAll(".info-btn");
-      infoButtons.forEach((button) => {
-        button.addEventListener("click", async (e) => {
-          const cityID = Number((e.target as HTMLButtonElement).getAttribute("data-id-info"));
-          const cities: City = await getCity(cityID);
-
-          cityInfo.innerHTML = `
-            <div class="canvas">
-              <div class="cityImageDiv">
-                <img src="${cities.img_url}" class="cityInfoImage" alt="Bild på ${cities.city_name}">
-              </div>
-              <div class="cityInfo">
-                <h2 class="cityTitle text-center">${cities.city_name}</h2>
-                <p class="cityLocation text-center">Location: ${cities.city_location}</p>
-                <p class="cityPopulation text-center">Population: ${cities.city_population}</p>
-                <p class="cityDescription text-center">Description: ${cities.city_description}</p>
-                <button class="btn btn-danger btn-m update-btn mt-5" type="button">Update</button>
-              </div>
-            </div>`;
-        });
-      });
-
-      
   } catch (error) {
   errormsg.innerHTML = `<h2 class="errorMsg">Something whent wrong when trying to get the cities data, ${error}</h2>`
   };
@@ -86,17 +62,48 @@ createCityElement.addEventListener("click", () => {
   })
 });
 
+const setupInfoButtons = () => {
+  const infoButtons = document.querySelectorAll(".info-btn");
+  infoButtons.forEach((button) => {
+    button.addEventListener("click", async (e) => {
+      const cityID = Number((e.target as HTMLButtonElement).getAttribute("data-id-info"));
+      const city: City = await getCity(cityID);
+
+      const cityInfo = document.querySelector(".offcanvas-body") as HTMLDivElement;
+      cityInfo.innerHTML = `
+        <div class="canvas">
+          <div class="cityImageDiv">
+            <img src="${city.img_url}" class="cityInfoImage" alt="Bild på ${city.city_name}">
+          </div>
+          <div class="cityInfo">
+            <h2 class="cityTitle text-center">${city.city_name}</h2>
+            <p class="cityLocation text-center">Location: ${city.city_location}</p>
+            <p class="cityPopulation text-center">Population: ${city.city_population}</p>
+            <p class="cityDescription text-center">Description: ${city.city_description}</p>
+            <button class="btn btn-danger btn-m update-btn mt-5" type="button">Update</button>
+          </div>
+        </div>`;
+    });
+  });
+};
+
+const setupDeleteButtons = () => {
+  const deleteButtons = document.querySelectorAll(".delete-btn");
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", async (e) => {
+      const cityID = Number((e.target as HTMLButtonElement).getAttribute("data-id-delete"));
+      await deleteCity(cityID);
+      await updateUI();
+    });
+  });
+};
+
+const updateUI = async () => {
+  await renderCities();
+  setupInfoButtons();
+  setupDeleteButtons();
+};
 
 await renderCities();
-
-const deleteButtons = document.querySelectorAll(".delete-btn");
-deleteButtons.forEach((button) => {
-  button.addEventListener("click", async (e) => {
-    const cityID = Number((e.target as HTMLButtonElement).getAttribute("data-id-delete"));
-    console.log(cityID);
-    await deleteCity(cityID);
-    await renderCities();
-  })
-})
-
-await renderCities();
+setupInfoButtons();
+setupDeleteButtons();
